@@ -31,11 +31,9 @@ CREATE TABLE Player (
     age integer,
     money integer,
     status VARCHAR(25),
-    InventoryId integer,
-    FOREIGN KEY (InventoryId) REFERENCES Inventory(inventoryId)
+    inventoryId integer,
+    FOREIGN KEY (inventoryId) REFERENCES Inventory(inventoryId)
 );
-
--- Now create the tables with foreign keys
 
 CREATE TABLE Weapons (
     idWeapon serial PRIMARY KEY,
