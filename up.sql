@@ -36,6 +36,31 @@ CREATE TABLE Player (
     FOREIGN KEY (InventoryId) REFERENCES Inventory(inventoryId)
 );
 
+-- Now create the tables with foreign keys
+
+CREATE TABLE Weapons (
+    idWeapon serial PRIMARY KEY,
+    idSubj integer,
+    FOREIGN KEY (idSubj) REFERENCES Subjects(idSubj),
+    damage integer CHECK (damage >= 5 AND damage <= 100),
+    howToGet VARCHAR(30)
+);
+
+CREATE TABLE Armor (
+    idArmor serial PRIMARY KEY,
+    idSubj integer,
+    FOREIGN KEY (idSubj) REFERENCES Subjects(idSubj),
+    armorBar integer CHECK (armorBar >= 5 AND armorBar <= 250),
+    howToGet VARCHAR(30)
+);
+
+CREATE TABLE Equipment (
+    idEquip serial PRIMARY KEY,
+    idSubj integer,
+    FOREIGN KEY (idSubj) REFERENCES Subjects(idSubj),
+    armorBar integer CHECK (armorBar >= 5 AND armorBar <= 150),
+    howToGet VARCHAR(30)
+);
 
 CREATE TABLE InventorySubject (
     inventoryId integer,
