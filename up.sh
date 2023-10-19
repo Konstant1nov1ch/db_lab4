@@ -10,7 +10,7 @@ LOCAL_SQL_FILE="up.sql"
 #ssh -p $SSH_PORT $SSH_USER@$REMOTE_SERVER "echo '$(cat $LOCAL_SQL_FILE)' | psql -h $PG_HOST -d $PG_DATABASE"
 
 
-psql -h localhost -p 5432 -d lab2 -U konstantin -f $LOCAL_SQL_FILE
+psql -h localhost -p 5432 -d lab4 -U konstantin -f $LOCAL_SQL_FILE
 
 
 

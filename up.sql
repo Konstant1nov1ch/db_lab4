@@ -1,6 +1,5 @@
 SET search_path TO s333714;
 
-
 CREATE TABLE Inventory (
     inventoryId serial PRIMARY KEY,
     size integer CHECK (size >= 10 AND size <= 50)

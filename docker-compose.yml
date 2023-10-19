@@ -4,7 +4,7 @@ services:
     image: postgres:latest
     container_name: labsDB
     environment:
-      POSTGRES_DB: lab2
+      POSTGRES_DB: lab4
       POSTGRES_USER: konstantin
       POSTGRES_PASSWORD: konstantin
     ports:
