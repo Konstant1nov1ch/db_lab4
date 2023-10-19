@@ -1,74 +1,92 @@
 SET search_path TO s333714;
 
 CREATE TABLE Inventory (
-    inventoryId serial PRIMARY KEY,
-    size integer CHECK (size >= 10 AND size <= 50)
-);
-
-CREATE TABLE Subjects (
-    idSubj serial PRIMARY KEY,
-    name VARCHAR(10),
-    describe VARCHAR(30),
-    howToGet VARCHAR(30),
-    floorId integer NOT NULL,
-    level integer NOT NULL
-);
-
-CREATE TABLE Skills (
-    idSkill serial PRIMARY KEY,
-    name VARCHAR(10),
-    type integer NOT NULL,
-    howToGet VARCHAR(30),
-    describe VARCHAR(30)
+  inventoryId serial PRIMARY KEY,
+  size INTEGER CHECK (size >= 50 AND size <= 100)
 );
 
 CREATE TABLE Player (
-    idPlayer serial PRIMARY KEY,
-    name VARCHAR(10),
-    hit_point integer NOT NULL,
-    exp integer,
-    gender VARCHAR(10),
-    age integer,
-    money integer,
-    status VARCHAR(25),
-    inventoryId integer,
-    FOREIGN KEY (inventoryId) REFERENCES Inventory(inventoryId)
+  playerId serial PRIMARY KEY,
+  nickname text,
+  hitpoints INTEGER CHECK (hitpoints >= 0 AND hitpoints <= 1000),
+  experience INTEGER CHECK (experience >= 0 AND experience <= 100000),
+  gender text,
+  age INTEGER CHECK (age >= 0 AND age <= 150),
+  money INTEGER CHECK (money >= 0 AND money <= 1000000),
+  status text,
+  inventoryId serial REFERENCES Inventory(inventoryId)
 );
 
-CREATE TABLE Weapons (
-    idWeapon serial PRIMARY KEY,
-    idSubj integer,
-    FOREIGN KEY (idSubj) REFERENCES Subjects(idSubj),
-    damage integer CHECK (damage >= 5 AND damage <= 100),
-    howToGet VARCHAR(30)
+CREATE TABLE Item (
+  itemId serial PRIMARY KEY,
+  name text,
+  description text,
+  drop_method text,
+  lvl int CHECK (lvl >= 1 AND lvl <= 100)
 );
 
 CREATE TABLE Armor (
-    idArmor serial PRIMARY KEY,
-    idSubj integer,
-    FOREIGN KEY (idSubj) REFERENCES Subjects(idSubj),
-    armorBar integer CHECK (armorBar >= 5 AND armorBar <= 250),
-    howToGet VARCHAR(30)
+  armorId serial PRIMARY KEY,
+  itemId serial REFERENCES Item(itemId),
+  defence_value INTEGER CHECK (defence_value >= 0 AND defence_value <= 500)
 );
 
 CREATE TABLE Equipment (
-    idEquip serial PRIMARY KEY,
-    idSubj integer,
-    FOREIGN KEY (idSubj) REFERENCES Subjects(idSubj),
-    armorBar integer CHECK (armorBar >= 5 AND armorBar <= 150),
-    howToGet VARCHAR(30)
+  equipmentId serial PRIMARY KEY,
+  itemId serial REFERENCES Item(itemId),
+  defence_value INTEGER CHECK (defence_value >= 0 AND defence_value <= 500)
 );
 
-CREATE TABLE InventorySubject (
-    inventoryId integer,
-    FOREIGN KEY (inventoryId) REFERENCES Inventory(inventoryId),
-    idSubj integer,
-    FOREIGN KEY (idSubj) REFERENCES Subjects(idSubj)
+CREATE TABLE Weapons (
+  weaponsId serial PRIMARY KEY,
+  itemId serial REFERENCES Item(itemId),
+  damage_value INTEGER CHECK (damage_value >= 1 AND damage_value <= 100)
 );
 
-CREATE TABLE PlayerSkill (
-    idPlayer integer,
-    FOREIGN KEY (idPlayer) REFERENCES Player(idPlayer),
-    idSkill integer,
-    FOREIGN KEY (idSkill) REFERENCES Skills(idSkill)
+CREATE TABLE Inventory_Item (
+  inventoryId serial REFERENCES Inventory(inventoryId),
+  itemId serial REFERENCES Item(itemId)
+);
+
+CREATE TABLE Skill (
+  skillId serial PRIMARY KEY,
+  name text,
+  type text,
+  drop_method text,
+  description text
+);
+
+CREATE TABLE Skill_Player (
+  playerId serial REFERENCES Player(playerId),
+  skillId serial REFERENCES Skill(skillId)
+);
+
+CREATE TABLE Floor (
+  floorId serial PRIMARY KEY,
+  name text,
+  climate text,
+  main_town text,
+  status text,
+  description text
+);
+
+CREATE TABLE Boss (
+  bossId serial PRIMARY KEY,
+  name text,
+  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 10000),
+  floor int REFERENCES Floor(floorId),
+  spawn_point text,
+  features text,
+  drop_item serial REFERENCES Item(itemId),
+  teleport_ability bool
+);
+
+CREATE TABLE Mob (
+  mobId serial PRIMARY KEY,
+  name text,
+  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 10000),
+  floor int REFERENCES Floor(floorId),
+  spawn_point text,
+  features text,
+  drop_item serial REFERENCES Item(itemId)
 );
