@@ -7,21 +7,21 @@ CREATE TABLE Inventory (
 
 CREATE TABLE Player (
   playerId serial PRIMARY KEY,
-  nickname text NOT NULL,
+  nickname VARCHAR(15) NOT NULL,
   hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 1000000) NOT NULL,
   experience int CHECK (experience >= 0 AND experience <= 100000) NOT NULL,
-  gender text NOT NULL,
+  gender VARCHAR(15) NOT NULL,
   age int CHECK (age >= 0 AND age <= 150) NOT NULL,
   money int CHECK (money >= 0 AND money <= 1000000) NOT NULL,
-  status text NOT NULL,
+  status VARCHAR(5) NOT NULL,
   inventoryId serial REFERENCES Inventory(inventoryId) NOT NULL
 );
 
 CREATE TABLE Item (
   itemId serial PRIMARY KEY,
-  name text NOT NULL,
-  description text NOT NULL,
-  drop_method text NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(150) NOT NULL,
+  drop_method VARCHAR(150) NOT NULL,
   lvl int CHECK (lvl >= 1 AND lvl <= 100) NOT NULL
 );
 
@@ -50,10 +50,10 @@ CREATE TABLE Inventory_Item (
 
 CREATE TABLE Skill (
   skillId serial PRIMARY KEY,
-  name text NOT NULL,
-  type text NOT NULL,
-  drop_method text NOT NULL,
-  description text NOT NULL
+  name VARCHAR(50) NOT NULL,
+  type VARCHAR(25) NOT NULL,
+  drop_method VARCHAR(200) NOT NULL,
+  description VARCHAR(300) NOT NULL
 );
 
 CREATE TABLE Skill_Player (
@@ -63,30 +63,30 @@ CREATE TABLE Skill_Player (
 
 CREATE TABLE Floor (
   floorId serial PRIMARY KEY,
-  name text NOT NULL,
-  climate text NOT NULL,
-  main_town text NOT NULL,
-  status text NOT NULL,
-  description text NOT NULL
+  name VARCHAR(20) NOT NULL,
+  climate VARCHAR(15) NOT NULL,
+  main_town VARCHAR(30) NOT NULL,
+  status VARCHAR(10) NOT NULL,
+  description VARCHAR(300) NOT NULL
 );
 
 CREATE TABLE Boss (
   bossId serial PRIMARY KEY,
-  name text NOT NULL,
+  name VARCHAR(25) NOT NULL,
   hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 1000000),
   floor int REFERENCES Floor(floorId),
-  spawn_point text NOT NULL,
-  features text NOT NULL,
+  spawn_point VARCHAR(50) NOT NULL,
+  features VARCHAR(300) NOT NULL,
   drop_item serial REFERENCES Item(itemId),
   teleport_ability bool NOT NULL
 );
 
 CREATE TABLE Mob (
   mobId serial PRIMARY KEY,
-  name text NOT NULL,
+  name VARCHAR(25) NOT NULL,
   hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 100000),
   floor int REFERENCES Floor(floorId),
-  spawn_point text NOT NULL,
-  features text NOT NULL,
+  spawn_point VARCHAR(50) NOT NULL,
+  features VARCHAR(150) NOT NULL,
   drop_item serial REFERENCES Item(itemId) NOT NULL
 );
