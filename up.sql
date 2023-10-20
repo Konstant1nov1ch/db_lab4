@@ -1,5 +1,17 @@
 SET search_path TO s333714;
 
+CREATE TYPE status AS ENUM('Жив', 'Мёртв', 'Неизвестно');
+CREATE TYPE floor_status AS ENUM('Открыт', 'Закрыт');
+CREATE TYPE gender AS ENUM('Мужской', 'Женский');
+CREATE TYPE method_to_get_item AS ENUM('0.1', '0.001', '0.90', '0.5');
+CREATE TYPE method_to_get_skill AS ENUM('15', '2','4');
+
+CREATE TABLE Location (
+  locationId serial PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  coordinate point NOT NULL
+);
+
 CREATE TABLE Inventory (
   inventoryId serial PRIMARY KEY,
   size INTEGER CHECK (size >= 50 AND size <= 100) NOT NULL
@@ -10,10 +22,10 @@ CREATE TABLE Player (
   nickname VARCHAR(15) NOT NULL,
   hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 1000000) NOT NULL,
   experience int CHECK (experience >= 0 AND experience <= 100000) NOT NULL,
-  gender VARCHAR(15) NOT NULL,
+  gender gender NOT NULL,
   age int CHECK (age >= 0 AND age <= 150) NOT NULL,
   money int CHECK (money >= 0 AND money <= 1000000) NOT NULL,
-  status VARCHAR(5) NOT NULL,
+  status status NOT NULL,
   inventoryId serial REFERENCES Inventory(inventoryId) NOT NULL
 );
 
@@ -40,7 +52,7 @@ CREATE TABLE Equipment (
 CREATE TABLE Weapons (
   weaponsId serial PRIMARY KEY,
   itemId serial REFERENCES Item(itemId),
-  damage_value int CHECK (damage_value >= 1 AND damage_value <= 10000)NOT NULL
+  damage_value int CHECK (damage_value >= 1 AND damage_value <= 10000) NOT NULL
 );
 
 CREATE TABLE Inventory_Item (
@@ -66,7 +78,7 @@ CREATE TABLE Floor (
   name VARCHAR(20) NOT NULL,
   climate VARCHAR(15) NOT NULL,
   main_town VARCHAR(30) NOT NULL,
-  status VARCHAR(10) NOT NULL,
+  status floor_status NOT NULL,
   description VARCHAR(300) NOT NULL
 );
 
@@ -78,7 +90,8 @@ CREATE TABLE Boss (
   spawn_point VARCHAR(50) NOT NULL,
   features VARCHAR(300) NOT NULL,
   drop_item serial REFERENCES Item(itemId),
-  teleport_ability bool NOT NULL
+  teleport_ability bool NOT NULL,
+  status status NOT NULL
 );
 
 CREATE TABLE Mob (
@@ -89,4 +102,22 @@ CREATE TABLE Mob (
   spawn_point VARCHAR(50) NOT NULL,
   features VARCHAR(150) NOT NULL,
   drop_item serial REFERENCES Item(itemId) NOT NULL
+);
+
+CREATE TABLE ExistMobs (
+  id serial PRIMARY KEY,
+  mobId serial REFERENCES Mob(mobId),
+  status status
+);
+
+CREATE TABLE Fight (
+  fightId serial PRIMARY KEY,
+  mobId serial REFERENCES Mob(mobId) NOT NULL,
+  playerId serial REFERENCES Player(playerId) NOT NULL
+);
+
+CREATE TABLE BossFight (
+  fightId serial PRIMARY KEY,
+  mobId serial REFERENCES Boss(bossId) NOT NULL,
+  playerId serial REFERENCES Player(playerId) NOT NULL
 );

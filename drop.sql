@@ -1,5 +1,11 @@
 SET search_path TO s333714;
 
+DROP TYPE IF EXISTS status CASCADE;
+DROP TYPE IF EXISTS floor_status CASCADE;
+DROP TYPE IF EXISTS gender CASCADE;
+DROP TYPE IF EXISTS method_to_get_item CASCADE;
+DROP TYPE IF EXISTS method_to_get_skill CASCADE;
+
 DO $$ 
 DECLARE
     tab_name text;
