@@ -8,7 +8,7 @@ CREATE TABLE Inventory (
 CREATE TABLE Player (
   playerId serial PRIMARY KEY,
   nickname text NOT NULL,
-  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 1000) NOT NULL,
+  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 1000000) NOT NULL,
   experience int CHECK (experience >= 0 AND experience <= 100000) NOT NULL,
   gender text NOT NULL,
   age int CHECK (age >= 0 AND age <= 150) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE Item (
 CREATE TABLE Armor (
   armorId serial PRIMARY KEY,
   itemId serial REFERENCES Item(itemId),
-  defence_value int CHECK (defence_value >= 0 AND defence_value <= 500) NOT NULL
+  defence_value int CHECK (defence_value >= 0 AND defence_value <= 10000) NOT NULL
 );
 
 CREATE TABLE Equipment (
@@ -40,7 +40,7 @@ CREATE TABLE Equipment (
 CREATE TABLE Weapons (
   weaponsId serial PRIMARY KEY,
   itemId serial REFERENCES Item(itemId),
-  damage_value int CHECK (damage_value >= 1 AND damage_value <= 100)NOT NULL
+  damage_value int CHECK (damage_value >= 1 AND damage_value <= 10000)NOT NULL
 );
 
 CREATE TABLE Inventory_Item (
@@ -73,7 +73,7 @@ CREATE TABLE Floor (
 CREATE TABLE Boss (
   bossId serial PRIMARY KEY,
   name text NOT NULL,
-  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 20000),
+  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 1000000),
   floor int REFERENCES Floor(floorId),
   spawn_point text NOT NULL,
   features text NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE Boss (
 CREATE TABLE Mob (
   mobId serial PRIMARY KEY,
   name text NOT NULL,
-  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 15000),
+  hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 100000),
   floor int REFERENCES Floor(floorId),
   spawn_point text NOT NULL,
   features text NOT NULL,
