@@ -7,6 +7,15 @@ DROP TYPE IF EXISTS method_to_get_item CASCADE;
 DROP TYPE IF EXISTS method_to_get_skill CASCADE;
 DROP TYPE IF EXISTS fight_result CASCADE;
 
+DROP INDEX IF EXISTS idx_player_playerId;
+DROP INDEX IF EXISTS idx_inventory_playerId;
+DROP INDEX IF EXISTS idx_inventory_item_itemId;
+DROP INDEX IF EXISTS idx_skill_player_playerId;
+DROP INDEX IF EXISTS idx_skill_skillId;
+DROP INDEX IF EXISTS idx_boss_bossid;
+DROP INDEX IF EXISTS idx_mob_mobid;
+DROP INDEX IF EXISTS idx_item_itemid;
+
 DO $$ 
 DECLARE
     tab_name text;
