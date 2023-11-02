@@ -4,7 +4,9 @@ CREATE TYPE status AS ENUM('Жив', 'Мёртв', 'Неизвестно');
 CREATE TYPE floor_status AS ENUM('Открыт', 'Закрыт');
 CREATE TYPE gender AS ENUM('Мужской', 'Женский');
 CREATE TYPE method_to_get_item AS ENUM('0.1', '0.001', '0.90', '0.5');
-CREATE TYPE method_to_get_skill AS ENUM('15', '2','4');
+CREATE TYPE method_to_get_skill AS ENUM('1', '5','10');
+
+CREATE TYPE fight_result AS ENUM('Игрок победил', 'Игрок проиграл');
 
 CREATE TABLE Location (
   locationId serial PRIMARY KEY,
@@ -70,7 +72,8 @@ CREATE TABLE Skill (
 
 CREATE TABLE Skill_Player (
   playerId serial REFERENCES Player(playerId),
-  skillId serial REFERENCES Skill(skillId)
+  skillId serial REFERENCES Skill(skillId),
+  killCounter INTEGER
 );
 
 CREATE TABLE Floor (
@@ -87,7 +90,7 @@ CREATE TABLE Boss (
   name VARCHAR(25) NOT NULL,
   hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 1000000),
   floor int REFERENCES Floor(floorId),
-  spawn_point VARCHAR(50) NOT NULL,
+  spawn_point serial REFERENCES Location(locationId),
   features VARCHAR(300) NOT NULL,
   drop_item serial REFERENCES Item(itemId),
   teleport_ability bool NOT NULL,
@@ -99,25 +102,27 @@ CREATE TABLE Mob (
   name VARCHAR(25) NOT NULL,
   hitpoints int CHECK (hitpoints >= 0 AND hitpoints <= 100000),
   floor int REFERENCES Floor(floorId),
-  spawn_point VARCHAR(50) NOT NULL,
   features VARCHAR(150) NOT NULL,
-  drop_item serial REFERENCES Item(itemId) NOT NULL
+  drop_item serial REFERENCES Item(itemId) NOT NULL,
+  spawn_point serial REFERENCES Location(locationId)
 );
 
 CREATE TABLE ExistMobs (
-  id serial PRIMARY KEY,
+  exmobId serial PRIMARY KEY,
   mobId serial REFERENCES Mob(mobId),
   status status
 );
 
 CREATE TABLE Fight (
   fightId serial PRIMARY KEY,
-  mobId serial REFERENCES Mob(mobId) NOT NULL,
-  playerId serial REFERENCES Player(playerId) NOT NULL
+  exmobId serial REFERENCES ExistMobs(exmobId) NOT NULL,
+  playerId serial REFERENCES Player(playerId) NOT NULL,
+  fightResult fight_result NOT NULL
 );
 
 CREATE TABLE BossFight (
   fightId serial PRIMARY KEY,
-  mobId serial REFERENCES Boss(bossId) NOT NULL,
-  playerId serial REFERENCES Player(playerId) NOT NULL
+  bossId serial REFERENCES Boss(bossId) NOT NULL,
+  playerId serial REFERENCES Player(playerId) NOT NULL,
+  fightResult fight_result NOT NULL
 );
