@@ -4,7 +4,7 @@ CREATE TYPE status AS ENUM('Жив', 'Мёртв', 'Неизвестно');
 CREATE TYPE floor_status AS ENUM('Открыт', 'Закрыт');
 CREATE TYPE gender AS ENUM('Мужской', 'Женский');
 CREATE TYPE method_to_get_item AS ENUM('0.1', '0.001', '0.90', '0.5');
-CREATE TYPE method_to_get_skill AS ENUM('1', '5','10');
+CREATE TYPE method_to_get_skill AS ENUM('1', '5','10', '15');
 
 CREATE TYPE fight_result AS ENUM('Игрок победил', 'Игрок проиграл');
 
@@ -66,14 +66,14 @@ CREATE TABLE Skill (
   skillId serial PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   type VARCHAR(25) NOT NULL,
-  drop_method VARCHAR(200) NOT NULL,
-  description VARCHAR(300) NOT NULL
+  description VARCHAR(300) NOT NULL,
+  method_to_get_skill method_to_get_skill NOT NULL
 );
 
 CREATE TABLE Skill_Player (
   playerId serial REFERENCES Player(playerId),
   skillId serial REFERENCES Skill(skillId),
-  killCounter INTEGER
+  killCounter INTEGER DEFAULT 0
 );
 
 CREATE TABLE Floor (

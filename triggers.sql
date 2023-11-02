@@ -87,4 +87,26 @@ BEGIN
   END IF;
   RETURN result_text;
 END;
-$$ LANGUAGE PLPGSQL
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION addNewSkillOnKillCounter5()
+RETURNS TRIGGER AS $$
+DECLARE
+    newSkillId INTEGER;
+BEGIN
+    FOR newSkillId IN SELECT skillId FROM Skill WHERE method_to_get_skill = '5' LOOP
+        IF NEW.killCounter >= 5 THEN
+            INSERT INTO Skill_Player (playerId, skillId, killCounter)
+            VALUES (NEW.playerId, newSkillId, NEW.killCounter);
+        END IF;
+    END LOOP;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER addNewSkillTrigger
+AFTER UPDATE OF killCounter ON Skill_Player
+FOR EACH ROW
+EXECUTE FUNCTION addNewSkillOnKillCounter5();
+
