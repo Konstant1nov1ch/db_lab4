@@ -5,6 +5,7 @@ DROP TYPE IF EXISTS floor_status CASCADE;
 DROP TYPE IF EXISTS gender CASCADE;
 DROP TYPE IF EXISTS method_to_get_item CASCADE;
 DROP TYPE IF EXISTS method_to_get_skill CASCADE;
+DROP TYPE IF EXISTS fight_result CASCADE;
 
 DO $$ 
 DECLARE
