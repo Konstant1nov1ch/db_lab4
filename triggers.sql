@@ -65,12 +65,14 @@ RETURNS TABLE(
   name VARCHAR(50),
   type VARCHAR(25),
   description VARCHAR(150),
-  drop_method VARCHAR(150)
-)
-AS $$
+  method_description TEXT
+) AS $$
 BEGIN
 RETURN QUERY
-SELECT skill.name, skill.type, skill.description, skill.drop_method FROM skill_player JOIN skill ON skill_player.skillid=skill.skillid WHERE skill_player.playerid=pId;
+SELECT skill.name, skill.type, skill.description, 'Убить ' || skill.method_to_get_skill::TEXT AS method_description
+FROM skill_player 
+JOIN skill ON skill_player.skillid = skill.skillid 
+WHERE skill_player.playerid = pId;
 END;
 $$ LANGUAGE PLPGSQL;
 
